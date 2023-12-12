@@ -1,5 +1,7 @@
 import os
 from pathlib import Path
+from typing import List
+
 from pydantic import AnyHttpUrl
 from pydantic_settings import BaseSettings
 
@@ -13,11 +15,12 @@ class Settings(BaseSettings):
     PROJECT_NAME: str
     PROJECT_VERSION: str
     PROJECT_HOST: str
-    PORT: int  # Use the name variable PORT for deploy to railway.app. Do not change it to another name!
+    PORT: int
 
     API_KEY: str
+    MODEL: str
 
-    ALLOWED_ORIGIN: list[AnyHttpUrl] = [
+    ALLOWED_ORIGIN: List[AnyHttpUrl] = [
         'http://localhost',
         'http://127.0.0.1',
         'http://0.0.0.0'

@@ -1,8 +1,10 @@
 import uvicorn
+import openai
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-from backend.config import Settings
+from config import Settings
+from endpoints import router
 
 
 settings = Settings()
@@ -22,6 +24,7 @@ def start_application(config: Settings):
 
 app = start_application(settings)
 
+app.include_router(router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.ALLOWED_ORIGIN,
@@ -29,6 +32,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.on_event("startup")
+async def startup_app():
+    openai.api_key = settings.API_KEY
 
 
 if __name__ == "__main__":
