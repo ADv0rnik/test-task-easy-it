@@ -6,7 +6,7 @@ from pydantic import AnyHttpUrl
 from pydantic_settings import BaseSettings
 
 
-BASE_DIR = (Path(__file__) / ".." / "..").resolve()
+BASE_DIR = (Path(__file__) / ".." / ".." / "..").resolve()
 ENV_PATH = os.path.join(BASE_DIR, ".env")
 
 
