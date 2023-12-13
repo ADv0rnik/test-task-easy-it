@@ -1,12 +1,16 @@
 import requests
 from typing import Literal
+
+from asgiref.sync import sync_to_async
 from core.config import Settings
-#
-#
+
+
 settings = Settings()
 
 
 class BaseHandler:
+
+    @sync_to_async
     def make_request(self, method: Literal['get', 'post'], prompt: str, url: str) -> requests.Response:
         try:
             # breakpoint()
@@ -18,12 +22,13 @@ class BaseHandler:
                     "Authorization": f"Bearer {settings.API_KEY}"
                 },
                 json={
-                    "model": "text-davinci-003",
+                    "model": settings.MODEL,
                     "prompt": prompt,
                     "max_tokens": 100
                 })
-            return res.json()
         except Exception as error:
-            return error
-
-
+            raise
+        else:
+            if res.status_code == 200:
+                return res.json()
+            return res
