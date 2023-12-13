@@ -1,6 +1,9 @@
 import logging
+import asyncio
+from aiohttp import ClientSession
 from requests import Response
 from datetime import datetime
+from typing import List
 
 from core.schemas import BaseResponse
 from handlers.base import BaseHandler
@@ -13,15 +16,19 @@ class GPTHandler(BaseHandler):
 
     BASE_URL = "https://api.openai.com/v1/completions"
 
-    async def extract_answer(self, message: str) -> BaseResponse:
+    async def extract_answer(self, messages: List[str]) -> List[BaseResponse] | BaseResponse:
+        responses = []
         try:
-            json_response = await self.make_request('post', prompt=message, url=self.BASE_URL)
-            base_resp = await self.parse_json(json_response)
-            logger.info(f"Message from GPT: {base_resp}, time: {datetime.now()}")
-            return BaseResponse(
-                id=base_resp["id"],
-                message=base_resp["message"]
-            )
+            async with ClientSession() as session:
+                for message in messages:
+                    resp = await self.make_request(session, self.BASE_URL, message)
+                    logger.info(f"Message from GPT: {resp}, time: {datetime.now()}")
+                    parsed_data = await self.parse_json(resp)
+                    responses.append(BaseResponse(
+                        id=parsed_data["id"],
+                        message=parsed_data["message"]
+                    ))                    
+            return responses
         except Exception as error:
             logger.error(f"Exception raised: {error}")
             return BaseResponse(
