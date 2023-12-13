@@ -32,3 +32,10 @@ class BaseHandler:
             if res.status_code == 200:
                 return res.json()
             return res
+
+    async def extract_answer(self, *args, **kwargs):
+        pass
+
+    @staticmethod
+    async def parse_json(*args, **kwargs):
+        pass

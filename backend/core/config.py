@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     PORT: int
 
     API_KEY: str
+    GIGA_KEY: str
     MODEL: str
 
     ALLOWED_ORIGIN: List[AnyHttpUrl] = [
