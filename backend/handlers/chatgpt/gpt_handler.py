@@ -17,7 +17,7 @@ class GPTHandler(BaseHandler):
         try:
             json_response = await self.make_request('post', prompt=message, url=self.BASE_URL)
             base_resp = await self.parse_json(json_response)
-            logger.info(f"Message from GPT: {base_resp["message"]}, time: {datetime.now()}")
+            logger.info(f"Message from GPT: {base_resp}, time: {datetime.now()}")
             return BaseResponse(
                 id=base_resp["id"],
                 message=base_resp["message"]
