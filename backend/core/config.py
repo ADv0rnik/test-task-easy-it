@@ -34,3 +34,36 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+
+LOGGING_CONFIG = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "standard": {
+            "format": "%(levelname)-7s %(asctime)s %(message)s"
+        }
+    },
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "standard"
+        },
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": os.path.join(BASE_DIR, 'logs', 'api.log'),
+            "formatter": "standard",
+            "encoding": "UTF-8",
+            "maxBytes": 10 * 1024 * 1024,
+            "backupCount": 1000
+        }
+    },
+    "loggers": {
+        "easy_it": {
+            "handlers": ["console", "file"],
+            "level": "DEBUG"
+        }
+    }
+}

@@ -1,4 +1,5 @@
 import requests
+import logging
 from typing import Literal
 
 from asgiref.sync import sync_to_async
@@ -6,6 +7,7 @@ from core.config import Settings
 
 
 settings = Settings()
+logger = logging.getLogger('easy_it')
 
 
 class BaseHandler:
@@ -27,7 +29,7 @@ class BaseHandler:
                     "max_tokens": 100
                 })
         except Exception as error:
-            raise
+            logger.error(f"Request error: {error}")
         else:
             if res.status_code == 200:
                 return res.json()

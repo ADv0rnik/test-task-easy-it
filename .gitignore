@@ -21,6 +21,7 @@ venv
 docs.zip
 archive.zip
 tmp.py
+*.log
 
 # vim temporary files
 *~

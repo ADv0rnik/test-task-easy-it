@@ -5,6 +5,6 @@ class Prompt(BaseModel):
     message: str
 
 
-class BaseAnswer(BaseModel):
+class BaseResponse(BaseModel):
     id: str
     message: str
